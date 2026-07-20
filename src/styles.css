@@ -318,27 +318,6 @@ body {
   margin: 0 0 12px;
   letter-spacing: 0.4px;
 }
-.seg {
-  display: flex;
-  gap: 10px;
-}
-.seg button {
-  flex: 1;
-  border-radius: 14px;
-  border: 1.5px solid var(--panel-border);
-  background: none;
-  color: var(--text);
-  font: inherit;
-  font-weight: 800;
-  font-size: 18px;
-  padding: 14px 0;
-  cursor: pointer;
-}
-.seg button.active {
-  background: var(--yellow);
-  border-color: var(--yellow);
-  color: #23303c;
-}
 .cat-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;

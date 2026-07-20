@@ -2,11 +2,12 @@ import { useStore } from '../game/store'
 import { CATEGORIES } from '../data/words'
 import { IconCheck, IconClose } from '../components/icons'
 
-const POINT_CHOICES = [3, 5, 7, 10]
-
 export function Options() {
   const { state, dispatch } = useStore()
-  const { pointsToWin, enabledCategories } = state.settings
+  const { enabledCategories } = state.settings
+  const nRed = state.teams.red.players.length
+  const nYellow = state.teams.yellow.players.length
+  const totalRounds = nRed + nYellow
 
   return (
     <div className="fade-in" style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
@@ -26,18 +27,12 @@ export function Options() {
       </div>
 
       <div className="options-section">
-        <h2>MANCHES POUR GAGNER</h2>
-        <div className="seg">
-          {POINT_CHOICES.map((v) => (
-            <button
-              key={v}
-              className={v === pointsToWin ? 'active' : ''}
-              onClick={() => dispatch({ type: 'setPointsToWin', value: v })}
-            >
-              {v}
-            </button>
-          ))}
-        </div>
+        <h2>MANCHES</h2>
+        <p className="hint" style={{ textAlign: 'left' }}>
+          {totalRounds > 0
+            ? `Chaque joueur fait deviner une fois : ${totalRounds} manche${totalRounds > 1 ? 's' : ''} au total avec vos équipes actuelles.`
+            : 'Chaque joueur fait deviner une fois. Le nombre de manches dépend du nombre de joueurs.'}
+        </p>
       </div>
 
       <div className="options-section">

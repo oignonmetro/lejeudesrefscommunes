@@ -25,7 +25,6 @@ export interface GameState {
   screen: Screen
   teams: Record<TeamId, TeamState>
   settings: {
-    pointsToWin: number
     enabledCategories: string[]
   }
   // État de la partie en cours
@@ -34,7 +33,31 @@ export interface GameState {
   currentTeam: TeamId
   word: string
   recentWords: string[]
+  /** Ordre des tours pour la partie : une manche par joueur, toutes équipes confondues. */
+  turnOrder: TeamId[]
+  turnIndex: number
   winner: TeamId | null
+}
+
+/** Répartit les tours entre les deux équipes le plus équitablement possible,
+ * de sorte que chaque joueur ait exactement une manche (nRed + nYellow manches au total). */
+function buildTurnOrder(nRed: number, nYellow: number): TeamId[] {
+  const total = nRed + nYellow
+  const order: TeamId[] = []
+  let usedRed = 0
+  let usedYellow = 0
+  for (let i = 0; i < total; i++) {
+    const redRatio = nRed === 0 ? Infinity : usedRed / nRed
+    const yellowRatio = nYellow === 0 ? Infinity : usedYellow / nYellow
+    if (redRatio <= yellowRatio) {
+      order.push('red')
+      usedRed++
+    } else {
+      order.push('yellow')
+      usedYellow++
+    }
+  }
+  return order
 }
 
 const STORAGE_KEY = 'refs-communes:v1'
@@ -47,7 +70,6 @@ function defaultState(): GameState {
       yellow: { players: [], score: 0, rotation: 0 },
     },
     settings: {
-      pointsToWin: 5,
       enabledCategories: CATEGORIES.map((c) => c.id),
     },
     playing: false,
@@ -55,6 +77,8 @@ function defaultState(): GameState {
     currentTeam: 'red',
     word: '',
     recentWords: [],
+    turnOrder: [],
+    turnIndex: 0,
     winner: null,
   }
 }
@@ -73,7 +97,6 @@ function loadState(): GameState {
         yellow: { ...base.teams.yellow, players: saved.teams?.yellow?.players ?? [] },
       },
       settings: {
-        pointsToWin: saved.settings?.pointsToWin ?? base.settings.pointsToWin,
         enabledCategories:
           saved.settings?.enabledCategories?.length
             ? saved.settings.enabledCategories
@@ -89,7 +112,6 @@ export type Action =
   | { type: 'goto'; screen: Screen }
   | { type: 'addPlayer'; team: TeamId; name: string }
   | { type: 'removePlayer'; team: TeamId; index: number }
-  | { type: 'setPointsToWin'; value: number }
   | { type: 'toggleCategory'; id: string }
   | { type: 'startGame' }
   | { type: 'ready' } // le conteur a pris le téléphone -> révèle le mot
@@ -140,9 +162,6 @@ function reducer(state: GameState, action: Action): GameState {
       }
     }
 
-    case 'setPointsToWin':
-      return { ...state, settings: { ...state.settings, pointsToWin: action.value } }
-
     case 'toggleCategory': {
       const enabled = state.settings.enabledCategories
       const has = enabled.includes(action.id)
@@ -160,7 +179,11 @@ function reducer(state: GameState, action: Action): GameState {
     }
 
     case 'startGame': {
-      const reset: GameState = {
+      const turnOrder = buildTurnOrder(
+        state.teams.red.players.length,
+        state.teams.yellow.players.length,
+      )
+      return {
         ...state,
         teams: {
           red: { ...state.teams.red, score: 0, rotation: 0 },
@@ -168,12 +191,13 @@ function reducer(state: GameState, action: Action): GameState {
         },
         playing: true,
         phase: 'pass',
-        currentTeam: 'red',
+        currentTeam: turnOrder[0] ?? 'red',
         recentWords: [],
+        turnOrder,
+        turnIndex: 0,
         winner: null,
         screen: 'game',
       }
-      return reset
     }
 
     case 'ready': {
@@ -203,19 +227,25 @@ function reducer(state: GameState, action: Action): GameState {
         ...state.teams,
         [teamId]: { ...team, score: newScore, rotation: team.rotation + 1 },
       }
-      if (newScore >= state.settings.pointsToWin) {
+      const nextIndex = state.turnIndex + 1
+      if (nextIndex >= state.turnOrder.length) {
+        const redScore = updatedTeams.red.score
+        const yellowScore = updatedTeams.yellow.score
+        const winner: TeamId | null =
+          redScore === yellowScore ? null : redScore > yellowScore ? 'red' : 'yellow'
         return {
           ...state,
           teams: updatedTeams,
+          turnIndex: nextIndex,
           phase: 'win',
-          winner: teamId,
+          winner,
         }
       }
-      const next: TeamId = teamId === 'red' ? 'yellow' : 'red'
       return {
         ...state,
         teams: updatedTeams,
-        currentTeam: next,
+        turnIndex: nextIndex,
+        currentTeam: state.turnOrder[nextIndex],
         phase: 'pass',
         word: '',
       }
@@ -224,7 +254,11 @@ function reducer(state: GameState, action: Action): GameState {
     case 'quitGame':
       return { ...state, playing: false, screen: 'home', phase: 'pass', word: '' }
 
-    case 'newGame':
+    case 'newGame': {
+      const turnOrder = buildTurnOrder(
+        state.teams.red.players.length,
+        state.teams.yellow.players.length,
+      )
       return {
         ...state,
         teams: {
@@ -233,11 +267,14 @@ function reducer(state: GameState, action: Action): GameState {
         },
         playing: true,
         phase: 'pass',
-        currentTeam: 'red',
+        currentTeam: turnOrder[0] ?? 'red',
         recentWords: [],
+        turnOrder,
+        turnIndex: 0,
         winner: null,
         screen: 'game',
       }
+    }
 
     default:
       return state
