@@ -1,13 +1,6 @@
 import { useState } from 'react'
 import { useStore, type TeamId } from '../game/store'
-import {
-  IconGear,
-  IconInfo,
-  IconPlay,
-  IconShare,
-  IconStar,
-  Logo,
-} from '../components/icons'
+import { IconGear, IconInfo, IconPlay, Logo } from '../components/icons'
 
 function TeamEditor({ team }: { team: TeamId }) {
   const { state, dispatch } = useStore()
@@ -53,28 +46,6 @@ function TeamEditor({ team }: { team: TeamId }) {
       )}
     </div>
   )
-}
-
-async function share(text: string) {
-  const data = {
-    title: 'Le jeu des refs communes',
-    text,
-    url: window.location.href,
-  }
-  try {
-    if (navigator.share) {
-      await navigator.share(data)
-      return
-    }
-  } catch {
-    /* partage annulé */
-  }
-  try {
-    await navigator.clipboard.writeText(`${text} ${window.location.href}`)
-    alert('Lien copié dans le presse-papier !')
-  } catch {
-    /* rien */
-  }
 }
 
 export function Home() {
@@ -124,20 +95,6 @@ export function Home() {
             <IconInfo />
           </span>
           Règles du jeu
-        </button>
-        <button
-          className="text-link"
-          onClick={() => share('Joue avec moi au jeu des refs communes !')}
-        >
-          <IconShare width={26} height={26} />
-          Partager
-        </button>
-        <button
-          className="text-link"
-          onClick={() => share('J’adore le jeu des refs communes, essaie-le !')}
-        >
-          <IconStar width={26} height={26} />
-          Noter l’application
         </button>
       </div>
     </div>

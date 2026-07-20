@@ -39,24 +39,38 @@ export function Game() {
   const team = state.currentTeam
   const { describer, guesser } = currentPair(state)
 
-  if (state.phase === 'win' && state.winner) {
+  if (state.phase === 'win') {
     const w = state.winner
-    const name = w === 'red' ? 'L’équipe rouge' : 'L’équipe jaune'
+    const accentClass = w ? `${w}-accent` : 'red-accent'
     return (
       <div className="fade-in" style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
         <Scorebar />
         <div className="game-center win">
-          <div className={`win-title ${w}`}>🎉 {name} gagne !</div>
-          <div className="win-sub">
-            {state.teams[w].score} manche{state.teams[w].score > 1 ? 's' : ''} remportée
-            {state.teams[w].score > 1 ? 's' : ''}
-          </div>
+          {w ? (
+            <>
+              <div className={`win-title ${w}`}>
+                🎉 {w === 'red' ? 'L’équipe rouge' : 'L’équipe jaune'} gagne !
+              </div>
+              <div className="win-sub">
+                {state.teams[w].score} manche{state.teams[w].score > 1 ? 's' : ''} remportée
+                {state.teams[w].score > 1 ? 's' : ''}
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="win-title">🤝 Égalité !</div>
+              <div className="win-sub">
+                {state.teams.red.score} partout, {state.turnOrder.length} manche
+                {state.turnOrder.length > 1 ? 's' : ''} jouées
+              </div>
+            </>
+          )}
         </div>
         <div className="game-actions">
           <button className="pill" onClick={() => dispatch({ type: 'quitGame' })}>
             <IconClose /> Accueil
           </button>
-          <button className={`pill ${w}-accent`} onClick={() => dispatch({ type: 'newGame' })}>
+          <button className={`pill ${accentClass}`} onClick={() => dispatch({ type: 'newGame' })}>
             <span className="ic" style={{ background: 'var(--yellow)' }}>
               <IconPlay width={16} height={16} />
             </span>
