@@ -1,0 +1,546 @@
+:root {
+  --bg: #3c4a5b;
+  --bg-2: #34414f;
+  --panel-border: #56637380;
+  --text: #ffffff;
+  --text-dim: #b9c2cd;
+  --red: #e8503a;
+  --red-soft: #f06a55;
+  --yellow: #f4b400;
+  --yellow-soft: #ffc933;
+  --white: #ffffff;
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', 'Nunito', system-ui, -apple-system, 'Helvetica Neue',
+    Arial, sans-serif;
+  font-weight: 700;
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior: none;
+  user-select: none;
+}
+
+#root {
+  display: flex;
+  justify-content: center;
+}
+
+.app {
+  width: 100%;
+  max-width: 480px;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--safe-top) + 8px) 22px calc(var(--safe-bottom) + 18px);
+  position: relative;
+}
+
+/* ---------- Boutons pilules ---------- */
+.pill {
+  border: none;
+  border-radius: 999px;
+  background: var(--white);
+  color: #2b3642;
+  font: inherit;
+  font-size: 18px;
+  font-weight: 800;
+  padding: 16px 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: transform 0.08s ease, opacity 0.15s ease;
+}
+.pill:active {
+  transform: scale(0.96);
+}
+.pill:disabled {
+  opacity: 0.45;
+  box-shadow: none;
+}
+.pill .ic {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  color: #fff;
+  flex: 0 0 auto;
+}
+.pill.red-accent {
+  color: var(--red);
+}
+.pill.yellow-accent {
+  color: var(--yellow);
+}
+
+.text-link {
+  background: none;
+  border: none;
+  color: var(--text);
+  font: inherit;
+  font-size: 18px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  padding: 12px;
+}
+.text-link .badge-ic {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: var(--white);
+  color: #2b3642;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---------- Home ---------- */
+.home {
+  align-items: center;
+  gap: 18px;
+}
+.logo {
+  width: 128px;
+  height: 128px;
+  margin: 18px 0 6px;
+}
+.team-block {
+  width: 100%;
+}
+.team-label {
+  text-align: center;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+.team-label.red {
+  color: var(--red-soft);
+}
+.team-label.yellow {
+  color: var(--yellow-soft);
+}
+.team-input-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1.5px solid var(--panel-border);
+  border-radius: 999px;
+  padding: 6px 6px 6px 20px;
+  min-height: 62px;
+}
+.team-input-row input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  min-width: 0;
+}
+.team-input-row.red input::placeholder {
+  color: var(--red-soft);
+  opacity: 0.85;
+}
+.team-input-row.yellow input::placeholder {
+  color: var(--yellow-soft);
+  opacity: 0.85;
+}
+.add-btn {
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  border: none;
+  background: var(--white);
+  color: #2b3642;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.add-btn:active {
+  transform: scale(0.94);
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  padding: 7px 8px 7px 14px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #23303c;
+}
+.chip.red {
+  background: var(--red-soft);
+}
+.chip.yellow {
+  background: var(--yellow-soft);
+}
+.chip button {
+  border: none;
+  background: rgba(0, 0, 0, 0.22);
+  color: #fff;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.home-actions {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  margin-top: 6px;
+}
+.home-actions .pill {
+  flex: 1;
+}
+.home-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-top: 14px;
+}
+.hint {
+  color: var(--text-dim);
+  font-weight: 600;
+  font-size: 13.5px;
+  text-align: center;
+  min-height: 18px;
+}
+
+/* ---------- Écrans texte (règles) ---------- */
+.screen-head {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 8px 0 22px;
+}
+.screen-head .badge-ic {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: var(--white);
+  color: #2b3642;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.screen-head h1 {
+  font-size: 26px;
+  margin: 0;
+}
+.rules-body {
+  flex: 1;
+  font-size: 20px;
+  line-height: 1.35;
+  font-weight: 700;
+}
+.rules-body p {
+  margin: 0 0 20px;
+}
+.rules-body .ok {
+  color: #cbd5df;
+}
+.spacer {
+  flex: 1;
+}
+.footer-center {
+  display: flex;
+  justify-content: center;
+  padding-top: 12px;
+}
+
+/* barre du haut avec la croix retour */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 40px;
+}
+.icon-btn {
+  border: none;
+  background: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  padding: 8px;
+  display: inline-flex;
+}
+
+/* ---------- Options ---------- */
+.options-section {
+  margin-bottom: 26px;
+}
+.options-section h2 {
+  font-size: 16px;
+  color: var(--text-dim);
+  margin: 0 0 12px;
+  letter-spacing: 0.4px;
+}
+.seg {
+  display: flex;
+  gap: 10px;
+}
+.seg button {
+  flex: 1;
+  border-radius: 14px;
+  border: 1.5px solid var(--panel-border);
+  background: none;
+  color: var(--text);
+  font: inherit;
+  font-weight: 800;
+  font-size: 18px;
+  padding: 14px 0;
+  cursor: pointer;
+}
+.seg button.active {
+  background: var(--yellow);
+  border-color: var(--yellow);
+  color: #23303c;
+}
+.cat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.cat {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 14px;
+  border: 1.5px solid var(--panel-border);
+  background: none;
+  color: var(--text);
+  font: inherit;
+  font-weight: 700;
+  font-size: 14.5px;
+  padding: 13px 12px;
+  cursor: pointer;
+  text-align: left;
+}
+.cat .emoji {
+  font-size: 20px;
+}
+.cat.on {
+  background: #ffffff12;
+  border-color: var(--yellow);
+}
+.cat .tick {
+  margin-left: auto;
+  opacity: 0;
+  color: var(--yellow);
+}
+.cat.on .tick {
+  opacity: 1;
+}
+
+/* ---------- Jeu : bandeau scores ---------- */
+.scorebar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  min-height: 96px;
+}
+.score-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.star {
+  position: relative;
+  width: 74px;
+  height: 74px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.star svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.star span {
+  position: relative;
+  font-size: 30px;
+  font-weight: 900;
+  color: #fff;
+}
+.score-badge small {
+  font-size: 12px;
+  font-weight: 700;
+  max-width: 120px;
+  text-align: center;
+  line-height: 1.15;
+  white-space: pre-line;
+}
+.score-badge.red small {
+  color: var(--red-soft);
+}
+.score-badge.yellow small {
+  color: var(--yellow-soft);
+}
+.score-badge.active .star {
+  filter: drop-shadow(0 0 10px currentColor);
+}
+
+/* ---------- Jeu : contenus centraux ---------- */
+.game-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 26px;
+  padding: 8px 0;
+}
+.big-instruction {
+  font-size: 34px;
+  line-height: 1.2;
+  font-weight: 800;
+}
+.big-instruction.red {
+  color: var(--red-soft);
+}
+.big-instruction.yellow {
+  color: var(--yellow-soft);
+}
+.reveal-lead {
+  font-size: 30px;
+  line-height: 1.22;
+  font-weight: 800;
+}
+.reveal-lead.red {
+  color: var(--red-soft);
+}
+.reveal-lead.yellow {
+  color: var(--yellow-soft);
+}
+.word {
+  font-size: 44px;
+  font-weight: 900;
+  text-decoration: underline;
+  text-underline-offset: 8px;
+  word-break: break-word;
+}
+.word.red {
+  color: var(--red-soft);
+}
+.word.yellow {
+  color: var(--yellow-soft);
+}
+.word.hidden {
+  filter: blur(16px);
+}
+.eye-btn {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--text-dim);
+  padding: 8px;
+}
+
+/* ---------- Jeu : barre d'actions bas ---------- */
+.game-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+}
+.game-actions .pill {
+  padding: 15px 22px;
+  font-size: 17px;
+}
+.round-btn {
+  width: 58px;
+  height: 58px;
+  border-radius: 999px;
+  border: none;
+  background: var(--white);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow);
+  flex: 0 0 auto;
+}
+.round-btn:active {
+  transform: scale(0.94);
+}
+
+/* ---------- Victoire ---------- */
+.win {
+  text-align: center;
+}
+.win-title {
+  font-size: 40px;
+  font-weight: 900;
+}
+.win-title.red {
+  color: var(--red-soft);
+}
+.win-title.yellow {
+  color: var(--yellow-soft);
+}
+.win-sub {
+  font-size: 20px;
+  color: var(--text-dim);
+  margin-top: 8px;
+}
+
+.fade-in {
+  animation: fade 0.22s ease;
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
