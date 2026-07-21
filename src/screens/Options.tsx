@@ -5,9 +5,9 @@ import { IconCheck, IconClose } from '../components/icons'
 export function Options() {
   const { state, dispatch } = useStore()
   const { enabledCategories } = state.settings
-  const nRed = state.teams.red.players.length
-  const nYellow = state.teams.yellow.players.length
-  const totalRounds = nRed + nYellow
+  const nPink = state.teams.pink.players.length
+  const nTeal = state.teams.teal.players.length
+  const totalRounds = nPink + nTeal
 
   return (
     <div className="fade-in" style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>

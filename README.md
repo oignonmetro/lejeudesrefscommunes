@@ -24,7 +24,7 @@ hors-ligne.
 
 ## Comment ça marche
 
-- 2 équipes (rouge / jaune), au moins **2 joueurs par équipe** (il faut un conteur
+- 2 équipes (rose / turquoise), au moins **2 joueurs par équipe** (il faut un conteur
   et un complice).
 - À chaque tour, le conteur prend le téléphone, découvre le mot, et le fait deviner
   à son complice à l'oral avec vos références communes.

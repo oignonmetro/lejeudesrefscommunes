@@ -6,7 +6,7 @@ function TeamEditor({ team }: { team: TeamId }) {
   const { state, dispatch } = useStore()
   const [name, setName] = useState('')
   const players = state.teams[team].players
-  const label = team === 'red' ? 'Équipe rouge' : 'Équipe jaune'
+  const label = team === 'pink' ? 'Équipe rose' : 'Équipe turquoise'
 
   const add = () => {
     dispatch({ type: 'addPlayer', team, name })
@@ -50,23 +50,23 @@ function TeamEditor({ team }: { team: TeamId }) {
 
 export function Home() {
   const { state, dispatch } = useStore()
-  const red = state.teams.red.players.length
-  const yellow = state.teams.yellow.players.length
-  const canPlay = red >= 2 && yellow >= 2
+  const pink = state.teams.pink.players.length
+  const teal = state.teams.teal.players.length
+  const canPlay = pink >= 2 && teal >= 2
 
   let hint = ''
   if (!canPlay) {
-    if (red < 2 && yellow < 2) hint = 'Chaque équipe a besoin d’au moins 2 joueurs.'
-    else if (red < 2) hint = 'Ajoute au moins 2 joueurs à l’équipe rouge.'
-    else hint = 'Ajoute au moins 2 joueurs à l’équipe jaune.'
+    if (pink < 2 && teal < 2) hint = 'Chaque équipe a besoin d’au moins 2 joueurs.'
+    else if (pink < 2) hint = 'Ajoute au moins 2 joueurs à l’équipe rose.'
+    else hint = 'Ajoute au moins 2 joueurs à l’équipe turquoise.'
   }
 
   return (
     <div className="home fade-in">
       <Logo className="logo" />
 
-      <TeamEditor team="red" />
-      <TeamEditor team="yellow" />
+      <TeamEditor team="pink" />
+      <TeamEditor team="teal" />
 
       <div className="home-actions">
         <button className="pill" onClick={() => dispatch({ type: 'goto', screen: 'options' })}>
@@ -76,11 +76,11 @@ export function Home() {
           Options
         </button>
         <button
-          className="pill red-accent"
+          className="pill pink-accent"
           disabled={!canPlay}
           onClick={() => dispatch({ type: 'startGame' })}
         >
-          <span className="ic" style={{ background: 'var(--yellow)' }}>
+          <span className="ic" style={{ background: 'var(--teal)' }}>
             <IconPlay width={16} height={16} />
           </span>
           Jouer

@@ -8,7 +8,7 @@ import {
 } from 'react'
 import { CATEGORIES, drawWord } from '../data/words'
 
-export type TeamId = 'red' | 'yellow'
+export type TeamId = 'pink' | 'teal'
 export type Screen = 'home' | 'rules' | 'options' | 'game'
 
 export interface TeamState {
@@ -40,41 +40,41 @@ export interface GameState {
 }
 
 /** Répartit les tours entre les deux équipes le plus équitablement possible,
- * de sorte que chaque joueur ait exactement une manche (nRed + nYellow manches au total). */
-function buildTurnOrder(nRed: number, nYellow: number): TeamId[] {
-  const total = nRed + nYellow
+ * de sorte que chaque joueur ait exactement une manche (nPink + nTeal manches au total). */
+function buildTurnOrder(nPink: number, nTeal: number): TeamId[] {
+  const total = nPink + nTeal
   const order: TeamId[] = []
-  let usedRed = 0
-  let usedYellow = 0
+  let usedPink = 0
+  let usedTeal = 0
   for (let i = 0; i < total; i++) {
-    const redRatio = nRed === 0 ? Infinity : usedRed / nRed
-    const yellowRatio = nYellow === 0 ? Infinity : usedYellow / nYellow
-    if (redRatio <= yellowRatio) {
-      order.push('red')
-      usedRed++
+    const pinkRatio = nPink === 0 ? Infinity : usedPink / nPink
+    const tealRatio = nTeal === 0 ? Infinity : usedTeal / nTeal
+    if (pinkRatio <= tealRatio) {
+      order.push('pink')
+      usedPink++
     } else {
-      order.push('yellow')
-      usedYellow++
+      order.push('teal')
+      usedTeal++
     }
   }
   return order
 }
 
-const STORAGE_KEY = 'refs-communes:v1'
+const STORAGE_KEY = 'refs-communes:v2'
 
 function defaultState(): GameState {
   return {
     screen: 'home',
     teams: {
-      red: { players: [], score: 0, rotation: 0 },
-      yellow: { players: [], score: 0, rotation: 0 },
+      pink: { players: [], score: 0, rotation: 0 },
+      teal: { players: [], score: 0, rotation: 0 },
     },
     settings: {
       enabledCategories: CATEGORIES.map((c) => c.id),
     },
     playing: false,
     phase: 'pass',
-    currentTeam: 'red',
+    currentTeam: 'pink',
     word: '',
     recentWords: [],
     turnOrder: [],
@@ -93,8 +93,8 @@ function loadState(): GameState {
     return {
       ...base,
       teams: {
-        red: { ...base.teams.red, players: saved.teams?.red?.players ?? [] },
-        yellow: { ...base.teams.yellow, players: saved.teams?.yellow?.players ?? [] },
+        pink: { ...base.teams.pink, players: saved.teams?.pink?.players ?? [] },
+        teal: { ...base.teams.teal, players: saved.teams?.teal?.players ?? [] },
       },
       settings: {
         enabledCategories:
@@ -180,18 +180,18 @@ function reducer(state: GameState, action: Action): GameState {
 
     case 'startGame': {
       const turnOrder = buildTurnOrder(
-        state.teams.red.players.length,
-        state.teams.yellow.players.length,
+        state.teams.pink.players.length,
+        state.teams.teal.players.length,
       )
       return {
         ...state,
         teams: {
-          red: { ...state.teams.red, score: 0, rotation: 0 },
-          yellow: { ...state.teams.yellow, score: 0, rotation: 0 },
+          pink: { ...state.teams.pink, score: 0, rotation: 0 },
+          teal: { ...state.teams.teal, score: 0, rotation: 0 },
         },
         playing: true,
         phase: 'pass',
-        currentTeam: turnOrder[0] ?? 'red',
+        currentTeam: turnOrder[0] ?? 'pink',
         recentWords: [],
         turnOrder,
         turnIndex: 0,
@@ -229,10 +229,10 @@ function reducer(state: GameState, action: Action): GameState {
       }
       const nextIndex = state.turnIndex + 1
       if (nextIndex >= state.turnOrder.length) {
-        const redScore = updatedTeams.red.score
-        const yellowScore = updatedTeams.yellow.score
+        const pinkScore = updatedTeams.pink.score
+        const tealScore = updatedTeams.teal.score
         const winner: TeamId | null =
-          redScore === yellowScore ? null : redScore > yellowScore ? 'red' : 'yellow'
+          pinkScore === tealScore ? null : pinkScore > tealScore ? 'pink' : 'teal'
         return {
           ...state,
           teams: updatedTeams,
@@ -256,18 +256,18 @@ function reducer(state: GameState, action: Action): GameState {
 
     case 'newGame': {
       const turnOrder = buildTurnOrder(
-        state.teams.red.players.length,
-        state.teams.yellow.players.length,
+        state.teams.pink.players.length,
+        state.teams.teal.players.length,
       )
       return {
         ...state,
         teams: {
-          red: { ...state.teams.red, score: 0, rotation: 0 },
-          yellow: { ...state.teams.yellow, score: 0, rotation: 0 },
+          pink: { ...state.teams.pink, score: 0, rotation: 0 },
+          teal: { ...state.teams.teal, score: 0, rotation: 0 },
         },
         playing: true,
         phase: 'pass',
-        currentTeam: turnOrder[0] ?? 'red',
+        currentTeam: turnOrder[0] ?? 'pink',
         recentWords: [],
         turnOrder,
         turnIndex: 0,
@@ -295,8 +295,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const toSave = {
       teams: {
-        red: { players: state.teams.red.players },
-        yellow: { players: state.teams.yellow.players },
+        pink: { players: state.teams.pink.players },
+        teal: { players: state.teams.teal.players },
       },
       settings: state.settings,
     }
@@ -305,7 +305,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     } catch {
       /* stockage indisponible : on ignore */
     }
-  }, [state.teams.red.players, state.teams.yellow.players, state.settings])
+  }, [state.teams.pink.players, state.teams.teal.players, state.settings])
 
   const value = useMemo(() => ({ state, dispatch }), [state])
   return <StoreContext.Provider value={value}>{children}</StoreContext.Provider>

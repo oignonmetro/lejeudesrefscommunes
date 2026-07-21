@@ -85,28 +85,17 @@ export const IconEye = (p: P) => (
   </svg>
 )
 
-const STAR_POINTS =
-  '60.0,4.0 70.0,16.1 84.3,9.5 88.1,24.8 103.8,25.1 100.5,40.5 114.6,47.5 105.0,60.0 114.6,72.5 100.5,79.5 103.8,94.9 88.1,95.2 84.3,110.5 70.0,103.9 60.0,116.0 50.0,103.9 35.7,110.5 31.9,95.2 16.2,94.9 19.5,79.5 5.4,72.5 15.0,60.0 5.4,47.5 19.5,40.5 16.2,25.1 31.9,24.8 35.7,9.5 50.0,16.1'
-
-/** Logo : badge étoile bicolore (rouge/jaune, les deux équipes) avec une bulle de dialogue
- * et une étincelle — le souvenir partagé qu'on fait deviner à l'oral. */
+/** Logo : deux guillemets stylisés (rose/turquoise, les deux équipes) —
+ * le mot qu'on se dit à l'oral, sans bulle ni ornement superflu. */
 export const Logo = (p: P) => (
   <svg viewBox="0 0 120 120" {...p}>
-    <defs>
-      <clipPath id="logo-half-l">
-        <rect x="0" y="0" width="60" height="120" />
-      </clipPath>
-      <clipPath id="logo-half-r">
-        <rect x="60" y="0" width="60" height="120" />
-      </clipPath>
-    </defs>
-    <polygon fill="#e8503a" clipPath="url(#logo-half-l)" points={STAR_POINTS} />
-    <polygon fill="#f4b400" clipPath="url(#logo-half-r)" points={STAR_POINTS} />
-    <rect x="30" y="36" width="60" height="42" rx="19" fill="#ffffff" />
-    <path d="M44 76 L38 92 L58 76 Z" fill="#ffffff" />
     <path
-      d="M60 47 L64 55 L73 57 L64 59 L60 68 L56 59 L47 57 L56 55 Z"
-      fill="#2b3642"
+      fill="#E12F72"
+      d="M30 26 C52 26 61 44 56 62 C53 75 41 82 27 79 C34 68 34 57 25 52 C16 47 14 34 21 27 C24 24 27 25 30 26 Z"
+    />
+    <path
+      fill="#12B3A6"
+      d="M74 26 C96 26 105 44 100 62 C97 75 85 82 71 79 C78 68 78 57 69 52 C60 47 58 34 65 27 C68 24 71 25 74 26 Z"
     />
   </svg>
 )
