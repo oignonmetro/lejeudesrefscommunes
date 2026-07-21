@@ -8,7 +8,7 @@ import {
 } from 'react'
 import { CATEGORIES, drawWord } from '../data/words'
 
-export type TeamId = 'pink' | 'teal'
+export type TeamId = 'pink' | 'blue'
 export type Screen = 'home' | 'rules' | 'options' | 'game'
 
 export interface TeamState {
@@ -40,21 +40,21 @@ export interface GameState {
 }
 
 /** Répartit les tours entre les deux équipes le plus équitablement possible,
- * de sorte que chaque joueur ait exactement une manche (nPink + nTeal manches au total). */
-function buildTurnOrder(nPink: number, nTeal: number): TeamId[] {
-  const total = nPink + nTeal
+ * de sorte que chaque joueur ait exactement une manche (nPink + nBlue manches au total). */
+function buildTurnOrder(nPink: number, nBlue: number): TeamId[] {
+  const total = nPink + nBlue
   const order: TeamId[] = []
   let usedPink = 0
-  let usedTeal = 0
+  let usedBlue = 0
   for (let i = 0; i < total; i++) {
     const pinkRatio = nPink === 0 ? Infinity : usedPink / nPink
-    const tealRatio = nTeal === 0 ? Infinity : usedTeal / nTeal
-    if (pinkRatio <= tealRatio) {
+    const blueRatio = nBlue === 0 ? Infinity : usedBlue / nBlue
+    if (pinkRatio <= blueRatio) {
       order.push('pink')
       usedPink++
     } else {
-      order.push('teal')
-      usedTeal++
+      order.push('blue')
+      usedBlue++
     }
   }
   return order
@@ -67,7 +67,7 @@ function defaultState(): GameState {
     screen: 'home',
     teams: {
       pink: { players: [], score: 0, rotation: 0 },
-      teal: { players: [], score: 0, rotation: 0 },
+      blue: { players: [], score: 0, rotation: 0 },
     },
     settings: {
       enabledCategories: CATEGORIES.map((c) => c.id),
@@ -94,7 +94,7 @@ function loadState(): GameState {
       ...base,
       teams: {
         pink: { ...base.teams.pink, players: saved.teams?.pink?.players ?? [] },
-        teal: { ...base.teams.teal, players: saved.teams?.teal?.players ?? [] },
+        blue: { ...base.teams.blue, players: saved.teams?.blue?.players ?? [] },
       },
       settings: {
         enabledCategories:
@@ -181,13 +181,13 @@ function reducer(state: GameState, action: Action): GameState {
     case 'startGame': {
       const turnOrder = buildTurnOrder(
         state.teams.pink.players.length,
-        state.teams.teal.players.length,
+        state.teams.blue.players.length,
       )
       return {
         ...state,
         teams: {
           pink: { ...state.teams.pink, score: 0, rotation: 0 },
-          teal: { ...state.teams.teal, score: 0, rotation: 0 },
+          blue: { ...state.teams.blue, score: 0, rotation: 0 },
         },
         playing: true,
         phase: 'pass',
@@ -230,9 +230,9 @@ function reducer(state: GameState, action: Action): GameState {
       const nextIndex = state.turnIndex + 1
       if (nextIndex >= state.turnOrder.length) {
         const pinkScore = updatedTeams.pink.score
-        const tealScore = updatedTeams.teal.score
+        const blueScore = updatedTeams.blue.score
         const winner: TeamId | null =
-          pinkScore === tealScore ? null : pinkScore > tealScore ? 'pink' : 'teal'
+          pinkScore === blueScore ? null : pinkScore > blueScore ? 'pink' : 'blue'
         return {
           ...state,
           teams: updatedTeams,
@@ -257,13 +257,13 @@ function reducer(state: GameState, action: Action): GameState {
     case 'newGame': {
       const turnOrder = buildTurnOrder(
         state.teams.pink.players.length,
-        state.teams.teal.players.length,
+        state.teams.blue.players.length,
       )
       return {
         ...state,
         teams: {
           pink: { ...state.teams.pink, score: 0, rotation: 0 },
-          teal: { ...state.teams.teal, score: 0, rotation: 0 },
+          blue: { ...state.teams.blue, score: 0, rotation: 0 },
         },
         playing: true,
         phase: 'pass',
@@ -296,7 +296,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     const toSave = {
       teams: {
         pink: { players: state.teams.pink.players },
-        teal: { players: state.teams.teal.players },
+        blue: { players: state.teams.blue.players },
       },
       settings: state.settings,
     }
@@ -305,7 +305,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     } catch {
       /* stockage indisponible : on ignore */
     }
-  }, [state.teams.pink.players, state.teams.teal.players, state.settings])
+  }, [state.teams.pink.players, state.teams.blue.players, state.settings])
 
   const value = useMemo(() => ({ state, dispatch }), [state])
   return <StoreContext.Provider value={value}>{children}</StoreContext.Provider>

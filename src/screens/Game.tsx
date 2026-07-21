@@ -4,7 +4,7 @@ import { IconClose, IconCheck, IconPlay, IconRefresh, IconEye, IconEyeOff } from
 
 function Star({ team, active }: { team: TeamId; active: boolean }) {
   const { state } = useStore()
-  const color = team === 'pink' ? 'var(--pink)' : 'var(--teal)'
+  const color = team === 'pink' ? 'var(--pink)' : 'var(--blue)'
   const players = state.teams[team].players
   const label = players.map((p) => p.charAt(0).toUpperCase()).join(' ')
   return (
@@ -28,7 +28,7 @@ function Scorebar() {
   return (
     <div className="scorebar">
       <Star team="pink" active={state.currentTeam === 'pink'} />
-      <Star team="teal" active={state.currentTeam === 'teal'} />
+      <Star team="blue" active={state.currentTeam === 'blue'} />
     </div>
   )
 }
@@ -49,7 +49,7 @@ export function Game() {
           {w ? (
             <>
               <div className={`win-title ${w}`}>
-                🎉 {w === 'pink' ? 'L’équipe rose' : 'L’équipe turquoise'} gagne !
+                🎉 {w === 'pink' ? 'L’équipe rose' : 'L’équipe bleue'} gagne !
               </div>
               <div className="win-sub">
                 {state.teams[w].score} manche{state.teams[w].score > 1 ? 's' : ''} remportée
@@ -71,7 +71,7 @@ export function Game() {
             <IconClose /> Accueil
           </button>
           <button className={`pill ${accentClass}`} onClick={() => dispatch({ type: 'newGame' })}>
-            <span className="ic" style={{ background: 'var(--teal)' }}>
+            <span className="ic" style={{ background: 'var(--blue)' }}>
               <IconPlay width={16} height={16} />
             </span>
             Rejouer
@@ -111,7 +111,7 @@ export function Game() {
                 dispatch({ type: 'ready' })
               }}
             >
-              <span className="ic" style={{ background: 'var(--teal)' }}>
+              <span className="ic" style={{ background: 'var(--blue)' }}>
                 <IconPlay width={16} height={16} />
               </span>
               Prêt
@@ -138,7 +138,7 @@ export function Game() {
               className={`pill ${team}-accent`}
               onClick={() => dispatch({ type: 'result', success: false })}
             >
-              <span className="ic" style={{ background: 'var(--teal)' }}>
+              <span className="ic" style={{ background: 'var(--blue)' }}>
                 <IconClose width={16} height={16} />
               </span>
               Échec
@@ -147,7 +147,7 @@ export function Game() {
               className={`pill ${team}-accent`}
               onClick={() => dispatch({ type: 'result', success: true })}
             >
-              <span className="ic" style={{ background: 'var(--teal)' }}>
+              <span className="ic" style={{ background: 'var(--blue)' }}>
                 <IconCheck width={16} height={16} />
               </span>
               Succès
