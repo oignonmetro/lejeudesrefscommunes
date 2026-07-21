@@ -6,8 +6,8 @@
   --text-dim: #b9c2cd;
   --pink: #e12f72;
   --pink-soft: #ff6fa5;
-  --teal: #12b3a6;
-  --teal-soft: #4fe0d2;
+  --blue: #2e86f5;
+  --blue-soft: #7ab8ff;
   --white: #ffffff;
   --shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
   --safe-top: env(safe-area-inset-top, 0px);
@@ -90,8 +90,8 @@ body {
 .pill.pink-accent {
   color: var(--pink);
 }
-.pill.teal-accent {
-  color: var(--teal);
+.pill.blue-accent {
+  color: var(--blue);
 }
 
 .text-link {
@@ -140,8 +140,8 @@ body {
 .team-label.pink {
   color: var(--pink-soft);
 }
-.team-label.teal {
-  color: var(--teal-soft);
+.team-label.blue {
+  color: var(--blue-soft);
 }
 .team-input-row {
   display: flex;
@@ -167,8 +167,8 @@ body {
   color: var(--pink-soft);
   opacity: 0.85;
 }
-.team-input-row.teal input::placeholder {
-  color: var(--teal-soft);
+.team-input-row.blue input::placeholder {
+  color: var(--blue-soft);
   opacity: 0.85;
 }
 .add-btn {
@@ -208,8 +208,8 @@ body {
 .chip.pink {
   background: var(--pink-soft);
 }
-.chip.teal {
-  background: var(--teal-soft);
+.chip.blue {
+  background: var(--blue-soft);
 }
 .chip button {
   border: none;
@@ -343,12 +343,12 @@ body {
 }
 .cat.on {
   background: #ffffff12;
-  border-color: var(--teal);
+  border-color: var(--blue);
 }
 .cat .tick {
   margin-left: auto;
   opacity: 0;
-  color: var(--teal);
+  color: var(--blue);
 }
 .cat.on .tick {
   opacity: 1;
@@ -398,8 +398,8 @@ body {
 .score-badge.pink small {
   color: var(--pink-soft);
 }
-.score-badge.teal small {
-  color: var(--teal-soft);
+.score-badge.blue small {
+  color: var(--blue-soft);
 }
 .score-badge.active .star {
   filter: drop-shadow(0 0 10px currentColor);
@@ -424,8 +424,8 @@ body {
 .big-instruction.pink {
   color: var(--pink-soft);
 }
-.big-instruction.teal {
-  color: var(--teal-soft);
+.big-instruction.blue {
+  color: var(--blue-soft);
 }
 .reveal-lead {
   font-size: 30px;
@@ -435,8 +435,8 @@ body {
 .reveal-lead.pink {
   color: var(--pink-soft);
 }
-.reveal-lead.teal {
-  color: var(--teal-soft);
+.reveal-lead.blue {
+  color: var(--blue-soft);
 }
 .word {
   font-size: 44px;
@@ -448,8 +448,8 @@ body {
 .word.pink {
   color: var(--pink-soft);
 }
-.word.teal {
-  color: var(--teal-soft);
+.word.blue {
+  color: var(--blue-soft);
 }
 .word.hidden {
   filter: blur(16px);
@@ -501,8 +501,8 @@ body {
 .win-title.pink {
   color: var(--pink-soft);
 }
-.win-title.teal {
-  color: var(--teal-soft);
+.win-title.blue {
+  color: var(--blue-soft);
 }
 .win-sub {
   font-size: 20px;

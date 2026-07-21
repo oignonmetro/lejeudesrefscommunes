@@ -6,7 +6,7 @@ function TeamEditor({ team }: { team: TeamId }) {
   const { state, dispatch } = useStore()
   const [name, setName] = useState('')
   const players = state.teams[team].players
-  const label = team === 'pink' ? 'Équipe rose' : 'Équipe turquoise'
+  const label = team === 'pink' ? 'Équipe rose' : 'Équipe bleue'
 
   const add = () => {
     dispatch({ type: 'addPlayer', team, name })
@@ -51,14 +51,14 @@ function TeamEditor({ team }: { team: TeamId }) {
 export function Home() {
   const { state, dispatch } = useStore()
   const pink = state.teams.pink.players.length
-  const teal = state.teams.teal.players.length
-  const canPlay = pink >= 2 && teal >= 2
+  const blue = state.teams.blue.players.length
+  const canPlay = pink >= 2 && blue >= 2
 
   let hint = ''
   if (!canPlay) {
-    if (pink < 2 && teal < 2) hint = 'Chaque équipe a besoin d’au moins 2 joueurs.'
+    if (pink < 2 && blue < 2) hint = 'Chaque équipe a besoin d’au moins 2 joueurs.'
     else if (pink < 2) hint = 'Ajoute au moins 2 joueurs à l’équipe rose.'
-    else hint = 'Ajoute au moins 2 joueurs à l’équipe turquoise.'
+    else hint = 'Ajoute au moins 2 joueurs à l’équipe bleue.'
   }
 
   return (
@@ -66,7 +66,7 @@ export function Home() {
       <Logo className="logo" />
 
       <TeamEditor team="pink" />
-      <TeamEditor team="teal" />
+      <TeamEditor team="blue" />
 
       <div className="home-actions">
         <button className="pill" onClick={() => dispatch({ type: 'goto', screen: 'options' })}>
@@ -80,7 +80,7 @@ export function Home() {
           disabled={!canPlay}
           onClick={() => dispatch({ type: 'startGame' })}
         >
-          <span className="ic" style={{ background: 'var(--teal)' }}>
+          <span className="ic" style={{ background: 'var(--blue)' }}>
             <IconPlay width={16} height={16} />
           </span>
           Jouer

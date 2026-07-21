@@ -6,8 +6,8 @@ export function Options() {
   const { state, dispatch } = useStore()
   const { enabledCategories } = state.settings
   const nPink = state.teams.pink.players.length
-  const nTeal = state.teams.teal.players.length
-  const totalRounds = nPink + nTeal
+  const nBlue = state.teams.blue.players.length
+  const totalRounds = nPink + nBlue
 
   return (
     <div className="fade-in" style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>

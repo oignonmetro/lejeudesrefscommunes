@@ -48,8 +48,8 @@ export function Rules() {
 
       <div className="spacer" />
       <div className="footer-center">
-        <button className="pill teal-accent" onClick={next}>
-          <span className="ic" style={{ background: 'var(--teal)' }}>
+        <button className="pill blue-accent" onClick={next}>
+          <span className="ic" style={{ background: 'var(--blue)' }}>
             <IconPlay width={16} height={16} />
           </span>
           {page === 0 ? 'Suivant' : 'Compris !'}
