@@ -52,11 +52,16 @@ export function Home() {
   const { state, dispatch } = useStore()
   const pink = state.teams.pink.players.length
   const blue = state.teams.blue.players.length
-  const canPlay = pink >= 2 && blue >= 2
+  const canPlayTeams = pink >= 2 && blue >= 2
+  const canPlayTrio = pink + blue === 3
+  const canPlay = canPlayTeams || canPlayTrio
 
   let hint = ''
-  if (!canPlay) {
-    if (pink < 2 && blue < 2) hint = 'Chaque équipe a besoin d’au moins 2 joueurs.'
+  if (canPlayTrio) {
+    hint = '3 joueurs : vous allez jouer en rotation individuelle, chacun fait deviner à tour de rôle.'
+  } else if (!canPlay) {
+    if (pink < 2 && blue < 2)
+      hint = 'Chaque équipe a besoin d’au moins 2 joueurs (ou 3 joueurs au total pour la rotation à 3).'
     else if (pink < 2) hint = 'Ajoute au moins 2 joueurs à l’équipe rose.'
     else hint = 'Ajoute au moins 2 joueurs à l’équipe bleue.'
   }

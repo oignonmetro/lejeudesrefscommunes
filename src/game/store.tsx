@@ -21,6 +21,25 @@ export interface TeamState {
 /** Phase à l'intérieur d'une manche. */
 export type Phase = 'pass' | 'reveal' | 'win'
 
+/** Mode à 3 joueurs : rotation individuelle, sans équipes. */
+export interface TrioState {
+  /** Les 3 joueurs, dans un ordre fixe (A, B, C). */
+  players: string[]
+  /** Score individuel, aligné sur `players`. */
+  scores: number[]
+}
+
+/** Les 6 manches d'une partie à 3 : chaque paire ordonnée (conteur, complice)
+ * joue une fois. Indices dans `TrioState.players`. */
+export const TRIO_ORDER: readonly (readonly [number, number])[] = [
+  [0, 1],
+  [1, 2],
+  [2, 0],
+  [1, 0],
+  [2, 1],
+  [0, 2],
+]
+
 export interface GameState {
   screen: Screen
   teams: Record<TeamId, TeamState>
@@ -29,6 +48,7 @@ export interface GameState {
   }
   // État de la partie en cours
   playing: boolean
+  mode: 'teams' | 'trio'
   phase: Phase
   currentTeam: TeamId
   word: string
@@ -37,6 +57,10 @@ export interface GameState {
   turnOrder: TeamId[]
   turnIndex: number
   winner: TeamId | null
+  /** Non nul uniquement en mode 'trio'. */
+  trio: TrioState | null
+  /** Index des gagnants (1 si un seul, 2-3 en cas d'égalité), rempli en mode 'trio' une fois la partie finie. */
+  trioWinners: number[] | null
 }
 
 /** Répartit les tours entre les deux équipes le plus équitablement possible,
@@ -73,6 +97,7 @@ function defaultState(): GameState {
       enabledCategories: CATEGORIES.map((c) => c.id),
     },
     playing: false,
+    mode: 'teams',
     phase: 'pass',
     currentTeam: 'pink',
     word: '',
@@ -80,6 +105,8 @@ function defaultState(): GameState {
     turnOrder: [],
     turnIndex: 0,
     winner: null,
+    trio: null,
+    trioWinners: null,
   }
 }
 
@@ -179,12 +206,32 @@ function reducer(state: GameState, action: Action): GameState {
     }
 
     case 'startGame': {
-      const turnOrder = buildTurnOrder(
-        state.teams.pink.players.length,
-        state.teams.blue.players.length,
-      )
+      const nPink = state.teams.pink.players.length
+      const nBlue = state.teams.blue.players.length
+
+      // 3 joueurs au total, tous champs confondus : rotation individuelle sans équipes.
+      if (nPink + nBlue === 3) {
+        const players = [...state.teams.pink.players, ...state.teams.blue.players]
+        return {
+          ...state,
+          mode: 'trio',
+          trio: { players, scores: [0, 0, 0] },
+          trioWinners: null,
+          playing: true,
+          phase: 'pass',
+          recentWords: [],
+          turnIndex: 0,
+          winner: null,
+          screen: 'game',
+        }
+      }
+
+      const turnOrder = buildTurnOrder(nPink, nBlue)
       return {
         ...state,
+        mode: 'teams',
+        trio: null,
+        trioWinners: null,
         teams: {
           pink: { ...state.teams.pink, score: 0, rotation: 0 },
           blue: { ...state.teams.blue, score: 0, rotation: 0 },
@@ -220,6 +267,34 @@ function reducer(state: GameState, action: Action): GameState {
     }
 
     case 'result': {
+      if (state.mode === 'trio' && state.trio) {
+        const [describerIdx, guesserIdx] = TRIO_ORDER[state.turnIndex]
+        const scores = state.trio.scores.slice()
+        if (action.success) {
+          scores[describerIdx] += 1
+          scores[guesserIdx] += 1
+        }
+        const nextIndex = state.turnIndex + 1
+        if (nextIndex >= TRIO_ORDER.length) {
+          const max = Math.max(...scores)
+          const trioWinners = scores.flatMap((s, i) => (s === max ? [i] : []))
+          return {
+            ...state,
+            trio: { ...state.trio, scores },
+            turnIndex: nextIndex,
+            phase: 'win',
+            trioWinners,
+          }
+        }
+        return {
+          ...state,
+          trio: { ...state.trio, scores },
+          turnIndex: nextIndex,
+          phase: 'pass',
+          word: '',
+        }
+      }
+
       const teamId = state.currentTeam
       const team = state.teams[teamId]
       const newScore = action.success ? team.score + 1 : team.score
@@ -255,6 +330,20 @@ function reducer(state: GameState, action: Action): GameState {
       return { ...state, playing: false, screen: 'home', phase: 'pass', word: '' }
 
     case 'newGame': {
+      if (state.mode === 'trio' && state.trio) {
+        return {
+          ...state,
+          trio: { players: state.trio.players, scores: [0, 0, 0] },
+          trioWinners: null,
+          playing: true,
+          phase: 'pass',
+          recentWords: [],
+          turnIndex: 0,
+          winner: null,
+          screen: 'game',
+        }
+      }
+
       const turnOrder = buildTurnOrder(
         state.teams.pink.players.length,
         state.teams.blue.players.length,
@@ -326,4 +415,11 @@ export function currentPair(state: GameState): { describer: string; guesser: str
   const describer = team.players[team.rotation % n]
   const guesser = team.players[(team.rotation + 1) % n]
   return { describer, guesser }
+}
+
+/** Renvoie le duo (conteur, complice) de la manche en cours, en mode rotation à 3. */
+export function trioCurrentPair(state: GameState): { describer: string; guesser: string } {
+  const [describerIdx, guesserIdx] = TRIO_ORDER[state.turnIndex] ?? [0, 1]
+  const players = state.trio?.players ?? []
+  return { describer: players[describerIdx] ?? '?', guesser: players[guesserIdx] ?? '?' }
 }

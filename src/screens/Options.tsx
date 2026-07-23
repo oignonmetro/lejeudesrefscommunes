@@ -29,9 +29,11 @@ export function Options() {
       <div className="options-section">
         <h2>MANCHES</h2>
         <p className="hint" style={{ textAlign: 'left' }}>
-          {totalRounds > 0
-            ? `Chaque joueur fait deviner une fois : ${totalRounds} manche${totalRounds > 1 ? 's' : ''} au total avec vos équipes actuelles.`
-            : 'Chaque joueur fait deviner une fois. Le nombre de manches dépend du nombre de joueurs.'}
+          {totalRounds === 3
+            ? 'Vous êtes 3 : chaque duo joue dans les deux sens, 6 manches au total (rotation individuelle, sans équipes).'
+            : totalRounds > 0
+              ? `Chaque joueur fait deviner une fois : ${totalRounds} manche${totalRounds > 1 ? 's' : ''} au total avec vos équipes actuelles.`
+              : 'Chaque joueur fait deviner une fois. Le nombre de manches dépend du nombre de joueurs.'}
         </p>
       </div>
 
