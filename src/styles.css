@@ -405,6 +405,33 @@ body {
   filter: drop-shadow(0 0 10px currentColor);
 }
 
+/* Mode rotation à 3 : 3 badges neutres, celui du joueur qui attend est grisé. */
+.scorebar.trio {
+  justify-content: space-around;
+  gap: 6px;
+}
+.scorebar.trio .score-badge {
+  flex: 1;
+  min-width: 0;
+}
+.scorebar.trio .star {
+  width: 60px;
+  height: 60px;
+}
+.scorebar.trio .star span {
+  font-size: 22px;
+}
+.score-badge.trio small {
+  color: var(--text-dim);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.score-badge.trio-idle {
+  opacity: 0.4;
+}
+
 /* ---------- Jeu : contenus centraux ---------- */
 .game-center {
   flex: 1;

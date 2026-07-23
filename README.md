@@ -25,12 +25,18 @@ hors-ligne.
 ## Comment ça marche
 
 - 2 équipes (rose / bleue), au moins **2 joueurs par équipe** (il faut un conteur
-  et un complice).
+  et un complice). À 3 joueurs au total, l'appli bascule automatiquement en
+  **rotation individuelle** : chaque duo joue dans les deux sens (A→B, B→C, C→A,
+  B→A, C→B, A→C), soit 6 manches, et chaque succès donne un point à chacun des
+  deux joueurs de la manche.
 - À chaque tour, le conteur prend le téléphone, découvre le mot, et le fait deviner
   à son complice à l'oral avec vos références communes.
-- **Succès** : l'équipe marque un point. **Échec** : pas de point, au tour suivant.
-  Le bouton 🔄 pioche un autre mot.
-- Première équipe à atteindre le nombre de manches défini dans les **Options**.
+- **Succès** : le duo marque un point (l'équipe en mode équipes, les deux joueurs
+  en rotation à 3). **Échec** : pas de point, au tour suivant. Le bouton 🔄 pioche
+  un autre mot.
+- Partie terminée au bout du nombre de manches défini par les **Options** (mode
+  équipes) ou après les 6 manches de la rotation (mode à 3). Le joueur ou
+  l'équipe avec le plus de points gagne (égalité possible).
 - Les mots sont classés par **thèmes** activables dans les Options. La liste se
   modifie dans [`src/data/words.ts`](src/data/words.ts).
 
