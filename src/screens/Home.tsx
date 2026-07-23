@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useStore, type TeamId } from '../game/store'
 import { IconGear, IconInfo, IconPlay, Logo } from '../components/icons'
+import { InstallBanner } from '../components/InstallBanner'
 
 function TeamEditor({ team }: { team: TeamId }) {
   const { state, dispatch } = useStore()
@@ -68,6 +69,7 @@ export function Home() {
 
   return (
     <div className="home fade-in">
+      <InstallBanner />
       <Logo className="logo" />
 
       <TeamEditor team="pink" />
