@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useStore, type TeamId } from '../game/store'
-import { IconGear, IconInfo, IconPlay, Logo } from '../components/icons'
+import { IconGear, IconInfo, IconPlay } from '../components/icons'
 import { InstallBanner } from '../components/InstallBanner'
 
 function TeamEditor({ team }: { team: TeamId }) {
@@ -70,7 +70,7 @@ export function Home() {
   return (
     <div className="home fade-in">
       <InstallBanner />
-      <Logo className="logo" />
+      <img src="logo-thelma.png" alt="Bientôt un super logo fait par Thelma" className="logo-img" />
 
       <TeamEditor team="pink" />
       <TeamEditor team="blue" />
